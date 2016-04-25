@@ -6,7 +6,7 @@ Writing forms is terrible, writing forms with validations is extremely terrible.
 easily, meanwhile, we want to use different styles. By searching and learning some existing react form projects, I found
 them difficult to use or hard to extend...
 
-## Design Targets
+## Design Goals
 - based on react
 - schema driven
 - least dependencies
@@ -14,7 +14,10 @@ them difficult to use or hard to extend...
 - easy to use
 - easy to extend with different layouts, styles, input types
 
-## Install
+## Demos
+[demo repo](https://github.com/ShakingMap/shaking-react-form-demo)
+
+## Installation
 This package depends on React, so you should make sure that React is installed first.
 
 After that, `npm install shaking-react-form --save`.
