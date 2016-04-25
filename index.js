@@ -1,6 +1,6 @@
-import React from 'react';
+const React = require('react');
 
-export default class Form extends React.Component {
+class Form extends React.Component {
     constructor(props) {
         super(props);
 
@@ -95,3 +95,5 @@ Form.propTypes = {
 };
 
 Form.defaultFieldClass = null;
+
+module.exports = Form;
