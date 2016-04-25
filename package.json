@@ -4,7 +4,7 @@
   "description": "build and use extensible react forms easily.",
   "main": "dist/form.js",
   "scripts": {
-    "build": "node_modules\\.bin\\babel src\\form.jsx > dist\\form.js",
+    "build": "node_modules/.bin/babel src/form.jsx > dist/form.js",
     "prepublish": "npm run build"
   },
   "author": "zhaoyao91",
