@@ -1,0 +1,8 @@
+{
+  "name": "shaking-react-form",
+  "version": "0.0.1",
+  "description": "build and use extensible react forms easily.",
+  "main": "index.js",
+  "author": "zhaoyao91",
+  "license": "ISC"
+}
