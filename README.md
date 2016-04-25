@@ -33,7 +33,7 @@ responsible to manage the whole state and logic, while the field part takes resp
 such as how to layout and style input field, and how to show validation errors.
 
 With such design, the core form part can be short, stable and robust with about only 100 lines, while infinite types
-and styles of field can be created and work with the core form. the code of field part may looks a little more than the
+and styles of field can be created and work with the core form. The code of field part may look a little more than the
 core form, but with concentrated focus, implement a series of fields is not hard.
 
 ## Simple Usage
