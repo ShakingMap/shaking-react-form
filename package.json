@@ -4,5 +4,9 @@
   "description": "build and use extensible react forms easily.",
   "main": "index.js",
   "author": "zhaoyao91",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ShakingMap/shaking-react-form.git"
+  }
 }
