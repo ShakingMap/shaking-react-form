@@ -123,8 +123,10 @@ var Form = function (_React$Component) {
                     onBlur: function onBlur() {
                         var _enableValidation = _this2.state._enableValidation;
 
-                        _enableValidation[key] = true;
-                        _this2.setState({ _enableValidation: _enableValidation });
+                        if (_enableValidation !== true) {
+                            _enableValidation[key] = true;
+                            _this2.setState({ _enableValidation: _enableValidation });
+                        }
                     }
                 });
             });

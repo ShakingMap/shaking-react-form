@@ -73,8 +73,10 @@ export default class Form extends React.Component {
                 onFocus={null}
                 onBlur={()=>{
                     const {_enableValidation} = this.state;
-                    _enableValidation[key] = true;
-                    this.setState({_enableValidation});
+                    if (_enableValidation !== true) {
+                        _enableValidation[key] = true;
+                        this.setState({_enableValidation});
+                    }
                 }}
             />
         })
