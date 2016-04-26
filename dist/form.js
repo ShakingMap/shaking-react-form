@@ -23,111 +23,71 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Form = function (_React$Component) {
     _inherits(Form, _React$Component);
 
-    function Form(props) {
+    function Form() {
         _classCallCheck(this, Form);
 
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Form).call(this, props));
-
-        var state = {
-            _enableValidation: {}
-        };
-
-        if (!props.values) {
-            (function () {
-                var schemas = props.schemas;
-
-                Object.keys(schemas).forEach(function (key) {
-                    state[key] = _this.getFieldClassOfKey(key).getDefaultValue(schemas[key]);
-                });
-            })();
-        }
-
-        _this.state = state;
-        return _this;
+        return _possibleConstructorReturn(this, Object.getPrototypeOf(Form).apply(this, arguments));
     }
 
     _createClass(Form, [{
         key: 'render',
         value: function render() {
-            var children = this.props.children;
-
-
             return _react2.default.createElement(
                 'form',
                 { onSubmit: this.onFormSubmit.bind(this) },
                 this.getFields(),
-                children
+                this.props.children
             );
         }
     }, {
         key: 'onFormSubmit',
         value: function onFormSubmit(e) {
+            var _this2 = this;
+
             e.preventDefault();
             var _props = this.props;
-            var schemas = _props.schemas;
             var onSubmit = _props.onSubmit;
+            var onErrors = _props.onErrors;
 
-            var values = this.props.values || this.state;
-            this.setState({ _enableValidation: true });
-            for (var key in schemas) {
-                if (schemas.hasOwnProperty(key) && schemas[key].validate && schemas[key].validate(this.getValueOfKey(key))) return;
+            var values = {};
+            var errors = {};
+            this.forEachKey(function (key) {
+                var field = _this2.refs[key];
+                field.enableValidation();
+                values[key] = field.getValue();
+                var error = field.getValidationError();
+                if (error) errors[key] = error;
+            });
+            Object.keys(errors).length > 0 ? onErrors(errors) : onSubmit(values);
+        }
+    }, {
+        key: 'forEachKey',
+        value: function forEachKey(callback) {
+            for (var key in this.props.schemas) {
+                if (this.props.schemas.hasOwnProperty(key)) {
+                    callback(key);
+                }
             }
-            onSubmit(values);
-        }
-    }, {
-        key: 'getValueOfKey',
-        value: function getValueOfKey(key) {
-            var schemas = this.props.schemas;
-
-            var values = this.props.values || this.state;
-            return values[key] !== undefined ? values[key] : this.getFieldClassOfKey(key).getDefaultValue(schemas[key]);
-        }
-    }, {
-        key: 'getFieldClassOfKey',
-        value: function getFieldClassOfKey(key) {
-            var _props2 = this.props;
-            var schemas = _props2.schemas;
-            var fieldClass = _props2.fieldClass;
-
-            return schemas[key].fieldClass || fieldClass || Form.defaultFieldClass;
-        }
-    }, {
-        key: 'getEnableValidationOfKey',
-        value: function getEnableValidationOfKey(key) {
-            return this.state._enableValidation === true || this.state._enableValidation[key];
         }
     }, {
         key: 'getFields',
         value: function getFields() {
-            var _this2 = this;
+            var _this3 = this;
 
-            var _props3 = this.props;
-            var schemas = _props3.schemas;
-            var values = _props3.values;
+            var schemas = this.props.schemas;
 
-            return Object.keys(schemas).map(function (key, index) {
-                var schema = schemas[key];
-                var FieldClass = _this2.getFieldClassOfKey(key);
-                var onFieldChange = values ? function (value) {
-                    return _this2.props.onChange(_defineProperty({}, key, value));
-                } : function (value) {
-                    return _this2.setState(_defineProperty({}, key, value));
-                };
-                return _react2.default.createElement(FieldClass, {
-                    key: index,
-                    schema: schema,
-                    enableValidation: _this2.getEnableValidationOfKey(key),
-                    value: _this2.getValueOfKey(key),
-                    onChange: onFieldChange,
-                    onFocus: null,
-                    onBlur: function onBlur() {
-                        var _enableValidation = _this2.state._enableValidation;
-
-                        if (_enableValidation !== true) {
-                            _enableValidation[key] = true;
-                            _this2.setState({ _enableValidation: _enableValidation });
-                        }
-                    }
+            return Object.keys(schemas).map(function (key) {
+                var fieldClass = schemas[key].fieldClass || _this3.props.fieldClass || Form.defaultFieldClass;
+                return _react2.default.createElement(Field, {
+                    ref: key,
+                    key: key,
+                    schema: schemas[key],
+                    fieldClass: fieldClass,
+                    value: _this3.props.values && _this3.props.values[key],
+                    onChange: function onChange(value) {
+                        return _this3.props.onChange(_defineProperty({}, key, value));
+                    },
+                    validate: schemas[key].validate || Form.defaultValidate
                 });
             });
         }
@@ -140,7 +100,8 @@ exports.default = Form;
 
 
 Form.propTypes = {
-    schemas: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.object, _react2.default.PropTypes.array]),
+    schemas: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.object, _react2.default.PropTypes.array]).isRequired,
+
     fieldClass: _react2.default.PropTypes.any,
 
     values: _react2.default.PropTypes.oneOfType([_react2.default.PropTypes.object, _react2.default.PropTypes.array]),
@@ -149,8 +110,124 @@ Form.propTypes = {
     onChange: _react2.default.PropTypes.func,
 
     // func(values)
-    onSubmit: _react2.default.PropTypes.func
+    onSubmit: _react2.default.PropTypes.func,
+
+    // func(errors)
+    onErrors: _react2.default.PropTypes.func
+};
+
+Form.defaultProps = {
+    onChange: function onChange() {},
+    onSubmit: function onSubmit() {},
+    onValues: function onValues() {},
+    onErrors: function onErrors() {}
 };
 
 Form.defaultFieldClass = null;
+Form.defaultValidate = function () {};
+
+var Field = function (_React$Component2) {
+    _inherits(Field, _React$Component2);
+
+    function Field(props) {
+        _classCallCheck(this, Field);
+
+        var _this4 = _possibleConstructorReturn(this, Object.getPrototypeOf(Field).call(this, props));
+
+        var state = {
+            enableValidation: false
+        };
+
+        // if there are no values, this is an uncontrolled form
+        // but the fields are controlled by form
+        if (props.value === undefined) state.value = null;
+
+        var value = _this4.getValue(props, state);
+        var result = _this4.validate(value);
+        state.validationError = result.validationError;
+        state.validationState = result.validationState;
+
+        _this4.state = state;
+        return _this4;
+    }
+
+    _createClass(Field, [{
+        key: 'componentWillUpdate',
+        value: function componentWillUpdate(nextProps, nextState) {
+            var oldValue = this.getValue();
+            var newValue = this.getValue(nextProps, nextState);
+            if (oldValue !== newValue) {
+                this.enableValidation();
+                this.setState(this.validate(newValue));
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this5 = this;
+
+            var _props2 = this.props;
+            var schema = _props2.schema;
+            var onChange = _props2.onChange;
+            var label = schema.label;
+            var type = schema.type;
+            var options = schema.options;
+
+            var FieldClass = this.props.fieldClass;
+            var validationState = this.state.enableValidation ? this.state.validationState : null;
+            var validationError = this.state.enableValidation ? this.state.validationError : '';
+            var onFieldChange = this.props.value === undefined ? function (value) {
+                return _this5.setState({ value: value });
+            } : onChange;
+
+            return _react2.default.createElement(FieldClass, {
+                label: label,
+                type: type,
+                options: options,
+                value: this.getValue(),
+                onChange: onFieldChange,
+                validationState: validationState,
+                validationError: validationError
+            });
+        }
+    }, {
+        key: 'getValue',
+        value: function getValue(props, state) {
+            if (!props || !state) {
+                props = this.props;
+                state = this.state;
+            }
+            return props.value !== undefined ? props.value : state.value;
+        }
+    }, {
+        key: 'getValidationError',
+        value: function getValidationError() {
+            return this.state.validationError;
+        }
+    }, {
+        key: 'enableValidation',
+        value: function enableValidation() {
+            var flag = arguments.length <= 0 || arguments[0] === undefined ? true : arguments[0];
+
+            this.setState({ enableValidation: flag });
+        }
+    }, {
+        key: 'validate',
+        value: function validate(value) {
+            var validationError = this.props.validate(value) || '';
+            var validationState = validationError ? 'error' : 'success';
+            return { validationError: validationError, validationState: validationState };
+        }
+    }]);
+
+    return Field;
+}(_react2.default.Component);
+
+Field.propTypes = {
+    schema: _react2.default.PropTypes.object.isRequired,
+    fieldClass: _react2.default.PropTypes.any.isRequired,
+    value: _react2.default.PropTypes.any,
+    onChange: _react2.default.PropTypes.func,
+    validate: _react2.default.PropTypes.func
+};
 

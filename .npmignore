@@ -1,2 +1,5 @@
+.idea
+.babelrc
+README.md
 node_modules
 src
