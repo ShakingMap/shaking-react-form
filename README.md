@@ -97,7 +97,7 @@ Brief demo:
 - {Func} **[onErrors]** - function(errors), callback for submit event of the form, will be triggered only if there are validation errors
 
 ### settings
-- **defaultFieldClass** - you can define a set field class for all forms in your app by `ShackingForm.defaultFieldClass = ...`
+- **defaultFieldClass** - you can set a field class for all forms in your app by `ShackingForm.defaultFieldClass = ...`
 
 ## Advanced
 You can create your own field classes, it's not hard, and we hope you can contribute them to the society :)
