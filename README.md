@@ -114,7 +114,7 @@ A field class is nothing but a react component which is responsible to **properl
 
 there are no limit about type, options, and value, you can define and describe them clearly in your docs.
 
-have a look at [how we do](https://github.com/ShakingMap/raw-shaking-react-form-field/blob/master/src/field.jsx) can also give you some helps.
+it's helpful to have a look at [how we do](https://github.com/ShakingMap/raw-shaking-react-form-field/blob/master/src/field.jsx).
 
 ## Q&A
 ### How to customize style or layout of a field?
@@ -122,4 +122,4 @@ You can create your own field class, use it for a individual field or compose it
 see [how to create field class](https://github.com/ShakingMap/shaking-react-form#advanced) and [how to compose field classes](https://github.com/ShakingMap/shaking-react-form#how-to-compose-field-classes)
 
 ### How to compose field classes
-A field class can be just a swicher which renders other field class by default. So you can write such a swicher field class to compose many other field classes. [react-mapper](https://github.com/zhaoyao91/react-mapper) is a good helper for you to do this. Also refer to this [demo](https://github.com/ShakingMap/shaking-react-form-demo/tree/master/compose-field-class).
+A field class can be just a swicher which renders other field class by type. So you can write such a swicher field class to compose many other field classes. [react-mapper](https://github.com/zhaoyao91/react-mapper) is a good helper for you to do this. see this [demo](https://github.com/ShakingMap/shaking-react-form-demo/tree/master/compose-field-class).
