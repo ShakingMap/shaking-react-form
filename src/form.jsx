@@ -43,6 +43,7 @@ export default class Form extends React.Component {
                 value={this.props.values && this.props.values[key]}
                 onChange={value=>this.props.onChange({[key]:value})}
                 validate={schemas[key].validate || Form.defaultValidate}
+                readonly={this.props.readonly}
             />
         }))
     }
@@ -105,7 +106,7 @@ class Field extends React.Component {
     }
 
     render() {
-        const {schema, onChange} = this.props;
+        const {schema, onChange, readonly} = this.props;
         const {label, type, options} = schema;
         const FieldClass = this.props.fieldClass;
         const validationState = this.state.enableValidation ? this.state.validationState : null;
@@ -120,6 +121,7 @@ class Field extends React.Component {
             onChange={onFieldChange}
             validationState={validationState}
             validationError={validationError}
+            readonly={readonly}
         />
     }
 
