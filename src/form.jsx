@@ -32,7 +32,7 @@ export default class Form extends React.Component {
     }
 
     getFields() {
-        const {schemas} = this.props;
+        const {schemas, readOnly, disabled} = this.props;
         return Object.keys(schemas).map((key=> {
             const fieldClass = schemas[key].fieldClass || this.props.fieldClass || Form.defaultFieldClass;
             return <Field
@@ -43,6 +43,8 @@ export default class Form extends React.Component {
                 value={this.props.values && this.props.values[key]}
                 onChange={value=>this.props.onChange({[key]:value})}
                 validate={schemas[key].validate || Form.defaultValidate}
+                readOnly={readOnly}
+                disabled={disabled}
             />
         }))
     }
@@ -62,7 +64,11 @@ Form.propTypes = {
     onSubmit: React.PropTypes.func,
 
     // func(errors)
-    onErrors: React.PropTypes.func
+    onErrors: React.PropTypes.func,
+
+    readOnly: React.PropTypes.bool,
+
+    disabled: React.PropTypes.bool
 };
 
 Form.defaultProps = {
@@ -112,6 +118,9 @@ class Field extends React.Component {
         const validationError = this.state.enableValidation ? this.state.validationError : '';
         const onFieldChange = this.props.value === undefined ? (value)=>this.setState({value}) : onChange;
 
+        const readOnly = this.props.readOnly || schema.readOnly;
+        const disabled = this.props.disabled || schema.disabled;
+
         return <FieldClass
             label={label}
             type={type}
@@ -120,6 +129,8 @@ class Field extends React.Component {
             onChange={onFieldChange}
             validationState={validationState}
             validationError={validationError}
+            readOnly={readOnly}
+            disabled={disabled}
         />
     }
 
@@ -151,5 +162,7 @@ Field.propTypes = {
     fieldClass: React.PropTypes.any.isRequired,
     value: React.PropTypes.any,
     onChange: React.PropTypes.func,
-    validate: React.PropTypes.func
+    validate: React.PropTypes.func,
+    readOnly: React.PropTypes.bool,
+    disabled: React.PropTypes.bool
 };

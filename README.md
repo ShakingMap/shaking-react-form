@@ -87,7 +87,9 @@ Brief demo:
             label: '...',
             validate: function(value){...}, // validation function for value of this field, return a string to indicate an validation error
             options: ..., // any thing a specific field needs, defined by the field class you use  
-            fieldClass: ... // you can specify a the field class for this filed individually
+            fieldClass: ..., // you can specify a the field class for this filed individually
+            readOnly: bool,
+            disabled: bool
         }
         
 - {ReactComponent} **[fieldClass]** - the field class the form will use to render the fields
@@ -95,6 +97,8 @@ Brief demo:
 - {Func} **[onChange]** - function(values), callback for change events of fields, only changed values are passed in
 - {Func} **[onSubmit]** - function(values), callback for submit event of the form, won't be triggered if there are validation errors
 - {Func} **[onErrors]** - function(errors), callback for submit event of the form, will be triggered only if there are validation errors
+- {Boolean} **[readOnly]**
+- {Boolean} **[disabled]**
 
 ### settings
 - **defaultFieldClass** - you can set a field class for all forms in your app by `ShackingForm.defaultFieldClass = ...`
