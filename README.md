@@ -1,8 +1,8 @@
 # Shaking React Form
 build and use extensible react forms easily.
 
-## Note
-This project has been updated to version 1.X.X. There are break changes from lower versions in api.
+## Deprecated
+This project is deprecated. Please refer to the replacement project [rf-form](https://github.com/ShakingMap/rf-form).
 
 ## Activation
 Writing forms is boring, writing forms with validations is extremely boring. We want to build forms with validations
